@@ -90,11 +90,13 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
+.link:hover,
+.link:focus,
+.link:active {
   color: #0070f3;
   border-color: #0070f3;
 }
@@ -106,7 +108,7 @@
 
 .card p {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
