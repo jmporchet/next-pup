@@ -9,11 +9,11 @@ import {
 } from "../../utils/puppeteer";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { eleves, courseId } = JSON.parse(req.body);
-  if (Array.isArray(eleves) && !!courseId) {
+  const { eleves, courseId, domaine } = JSON.parse(req.body);
+  if (Array.isArray(eleves) && !!courseId && !!domaine) {
     let results = [];
     const { page, browser } = await login(PUPPETEER_OPTIONS);
-    await switchSections(page, "sensibilisation");
+    await switchSections(page, domaine);
     for (const eleve of eleves) {
       const { firstName, lastName } = await addEleve(
         page,
