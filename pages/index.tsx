@@ -7,23 +7,45 @@ export default function Home(props: any) {
   const [eleves, setEleves] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [result, setResult] = useState([]);
 
   async function handleClick() {
-    if (selectedCourse === "") return false;
-    if (!Array.isArray(eleves) || eleves.length < 1) return false;
+    if (selectedCourse === "") {
+      console.log("selectedCourse error");
+      return false;
+    }
+    if (eleves.length < 15 || !eleves.includes(",")) {
+      console.log("eleve array error", eleves);
+      return false;
+    }
+    const domaine = props.courses.sensi.find(
+      (course: any) => course.id === selectedCourse
+    )
+      ? "sensibilisation"
+      : props.courses.moto.find((course: any) => course.id === selectedCourse)
+      ? "moto"
+      : "";
+    if (domaine === "") {
+      console.log("domaine error");
+      return false;
+    }
+
+    // return console.log(selectedCourse, eleves, domaine);
     setLoading(true);
     try {
       const res = await fetch("http://localhost:3000/api/addStudentsToCourse", {
         body: JSON.stringify({
           eleves: eleves.split("\n").reduce((list: any[], line: string) => {
-            const [faber, bday] = line.split(",");
+            const [faber, bday] = line.trim().split(",");
             return [...list, { faber, bday }];
           }, []),
           courseId: selectedCourse,
+          domaine,
         }),
         method: "post",
       });
-      console.log("res", await res.json());
+      const result = await res.json();
+      setResult(result[0].result);
     } catch (e) {
       console.log("error", e);
     } finally {
@@ -68,7 +90,7 @@ export default function Home(props: any) {
           </div>
 
           <div className={styles.card}>
-            <h3>Learn &rarr;</h3>
+            <h3>faber,date de naissance</h3>
             <textarea
               rows={12}
               cols={30}
@@ -101,15 +123,18 @@ export default function Home(props: any) {
             )) || <p>no courses</p>}
           </div>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <div className={styles.card}>
+            <h3>Resultat</h3>
+            {result.map((res: any) => (
+              <p>
+                {res.course}:{" "}
+                {Object.keys(messages).includes(res.message)
+                  ? // @ts-ignore
+                    messages[res.message]
+                  : res.message}
+              </p>
+            ))}
+          </div>
         </div>
       </main>
 
@@ -137,3 +162,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: courses,
   };
 }
+
+const messages = {
+  "course.notenabled": "cours non activé",
+  "person.already.added": "déjà ajouté",
+};
