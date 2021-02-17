@@ -174,7 +174,7 @@ export const switchSections = async (page: Page, section: string) => {
 };
 
 export const PUPPETEER_OPTIONS = {
-  headless: false,
+  headless: true,
   args: [
     "--disable-gpu",
     "--disable-dev-shm-usage",
