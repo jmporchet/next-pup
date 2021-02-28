@@ -3,7 +3,11 @@ import { Page } from "puppeteer";
 const { isPast } = require("date-fns");
 const puppeteer = require("puppeteer");
 
-export const login = async (PUPPETEER_OPTIONS: any) => {
+export const login = async (
+  PUPPETEER_OPTIONS: any,
+  login: string,
+  password: string
+) => {
   const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
   const page = await browser.newPage();
 
@@ -13,8 +17,8 @@ export const login = async (PUPPETEER_OPTIONS: any) => {
 
   await page.waitForSelector("#wrapper #username");
 
-  await page.type("#wrapper #username", "midi");
-  await page.type("#wrapper #password", "MIdi..581");
+  await page.type("#wrapper #username", login);
+  await page.type("#wrapper #password", password);
 
   await page.waitForSelector("#wrapper #_submit");
   await page.click("#wrapper #_submit");

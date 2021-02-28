@@ -9,9 +9,13 @@ import {
 } from "../../utils/puppeteer";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { eleve, courseId, domaine } = JSON.parse(req.body);
+  const { eleve, courseId, domaine, username, password } = JSON.parse(req.body);
   if (!!eleve.faber && !!eleve.bday && !!courseId) {
-    const { page, browser } = await login(PUPPETEER_OPTIONS);
+    const { page, browser } = await login(
+      PUPPETEER_OPTIONS,
+      username,
+      password
+    );
     await switchSections(page, domaine);
     const { firstName, lastName } = await addEleve(
       page,

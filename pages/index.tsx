@@ -1,37 +1,55 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { useState } from "react";
 
 export default function Home(props: any) {
   const [eleves, setEleves] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<any[]>([]);
+  const [sariUsername, setSariUsername] = useState("");
+  const [sariPassword, setSariPassword] = useState("");
+  const [courses, setCourses] = useState({ sensi: [], moto: [] });
+
+  useEffect(() => {
+    async function fetchCourses() {
+      const res = await fetch(
+        `http://localhost:3000/api/courses?username=${sariUsername}&password=${sariPassword}`
+      );
+      const courses = await res.json();
+      console.log("courses: ", courses);
+      setCourses({ sensi: courses.courses.sensi, moto: courses.courses.moto });
+    }
+    if (sariUsername !== "" && sariPassword !== "") {
+      fetchCourses();
+    }
+  }, [sariUsername, sariPassword]);
 
   async function handleClick() {
     if (selectedCourse === "") {
-      console.log("selectedCourse error");
+      setResult([{ message: "selectedCourse error" }]);
       return false;
     }
     if (eleves.length < 15 || !eleves.includes(",")) {
-      console.log("eleve array error", eleves);
+      setResult([{ message: "eleve array error" }]);
       return false;
     }
-    const domaine = props.courses.sensi.find(
+    const domaine = courses.sensi.find(
       (course: any) => course.id === selectedCourse
     )
       ? "sensibilisation"
-      : props.courses.moto.find((course: any) => course.id === selectedCourse)
+      : courses.moto.find((course: any) => course.id === selectedCourse)
       ? "moto"
       : "";
     if (domaine === "") {
-      console.log("domaine error");
+      setResult([{ message: "domaine error" }]);
       return false;
     }
 
     // return console.log(selectedCourse, eleves, domaine);
     setLoading(true);
+    setResult([""]);
     try {
       const res = await fetch("http://localhost:3000/api/addStudentsToCourse", {
         body: JSON.stringify({
@@ -52,6 +70,13 @@ export default function Home(props: any) {
       setLoading(false);
     }
   }
+
+  function handleFetch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSariUsername(e.target.elements.login.value);
+    setSariPassword(e.target.elements.password.value);
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -69,8 +94,20 @@ export default function Home(props: any) {
 
         <div className={styles.grid}>
           <div className={styles.card}>
+            <h3>Codes d'accès Sari</h3>
+            <form
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleFetch(e)}
+            >
+              <input type="text" name="login" defaultValue="" />
+              <input type="password" name="password" defaultValue="" />
+            </form>
+          </div>
+        </div>
+
+        <div className={styles.grid}>
+          <div className={styles.card}>
             <h3>Liste des cours de sensi</h3>
-            {props.courses.sensi.map((course: any) => (
+            {courses.sensi.map((course: any) => (
               <>
                 <a
                   className={styles.link}
@@ -104,7 +141,7 @@ export default function Home(props: any) {
 
           <div className={styles.card}>
             <h3>Liste des cours de moto</h3>
-            {props.courses.moto.map((course: any) => (
+            {courses.moto.map((course: any) => (
               <>
                 <a
                   className={styles.link}
@@ -150,17 +187,6 @@ export default function Home(props: any) {
       </footer>
     </div>
   );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const res = await fetch("http://localhost:3000/api/courses");
-  const courses = await res.json();
-
-  // By returning { props: courses }, the component
-  // will receive `courses` as a prop at run time
-  return {
-    props: courses,
-  };
 }
 
 const messages = {
