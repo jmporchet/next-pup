@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
+import { useLocalStorageState } from "../utils/useLocalStorage";
 
 export default function Home(props: any) {
   const [eleves, setEleves] = useState("");
@@ -11,6 +12,11 @@ export default function Home(props: any) {
   const [sariUsername, setSariUsername] = useState("");
   const [sariPassword, setSariPassword] = useState("");
   const [courses, setCourses] = useState({ sensi: [], moto: [] });
+
+  const [savedCredentials, setSavedCredentials] = useLocalStorageState(
+    "sariCredentials",
+    {}
+  );
 
   useEffect(() => {
     async function fetchCourses() {
@@ -73,6 +79,10 @@ export default function Home(props: any) {
 
   function handleFetch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setSavedCredentials({
+      username: e.target.elements.login.value,
+      password: e.target.elements.password.value,
+    });
     setSariUsername(e.target.elements.login.value);
     setSariPassword(e.target.elements.password.value);
   }
