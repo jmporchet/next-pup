@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import MinimalFeedback from "minimal-feedback";
+import "minimal-feedback/dist/index.css";
 
 import styles from "../styles/Home.module.css";
 import { useLocalStorageState } from "../utils/useLocalStorage";
@@ -10,6 +12,19 @@ import { MainScreen } from "./MainScreen";
 
 export default function Home(props: any) {
   const [hasCredentials, toggleCredentials] = useState(false);
+  const [text, settext] = useState({ feedback: "" });
+
+  const saveFeedback = async () => {
+    const req = await fetch(
+      "https://hook.integromat.com/fpsmu2ifubkw0wxoak5i1bt1t13ychwr",
+      {
+        body: JSON.stringify(text),
+        method: "post",
+      }
+    );
+    return await req.json();
+  };
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -81,6 +96,12 @@ export default function Home(props: any) {
             </>
           )}
         </main>
+        <MinimalFeedback
+          save={saveFeedback}
+          value={text}
+          onChange={(e: any) => settext(e)}
+          ariaHideApp={false}
+        />
         <ReactQueryDevtools initialIsOpen />
       </div>
     </QueryClientProvider>
