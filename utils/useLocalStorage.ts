@@ -6,16 +6,22 @@ export function useLocalStorageState(
   { serialize = JSON.stringify, deserialize = JSON.parse } = {}
 ) {
   const [state, setState] = React.useState(() => {
-    const valueInLocalStorage = window.localStorage.getItem(key);
-    if (valueInLocalStorage) {
-      return deserialize(valueInLocalStorage);
+    if (typeof window !== "undefined") {
+      const valueInLocalStorage = window.localStorage.getItem(key);
+      if (valueInLocalStorage) {
+        return deserialize(valueInLocalStorage);
+      } else {
+        return defaultValue;
+      }
     } else {
       return defaultValue;
     }
   });
 
   React.useEffect(() => {
-    window.localStorage.setItem(key, serialize(state));
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, serialize(state));
+    }
   }, [key, serialize, state]);
 
   return [state, setState];
