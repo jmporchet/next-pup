@@ -17,10 +17,12 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [result, setResult] = useState<any[]>([]);
 
+  const url =
+    process.env.NEXT_PUBLIC_VERCEL_URL === "localhost"
+      ? `http://localhost:3000/api/courses?username=${sariUsername}&password=${sariPassword}`
+      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}:3000/api/courses?username=${sariUsername}&password=${sariPassword}`;
   const { isLoading, error, data, isFetching } = useQuery("sariData", () =>
-    fetch(
-      `http://localhost:3000/api/courses?username=${sariUsername}&password=${sariPassword}`
-    ).then((res) => res.json())
+    fetch(url).then((res) => res.json())
   );
 
   async function handleClick() {
