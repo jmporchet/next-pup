@@ -126,6 +126,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
           cols={30}
           value={eleves}
           onChange={(e) => setEleves(e.target.value)}
+          placeholder="Par exemple:&#10;0068.123.456,12.01.1999&#10;68123456,12.01.99&#10;Un élève par ligne."
         />
         <button type="submit" disabled={loading} onClick={handleClick}>
           Envoyer
