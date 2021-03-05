@@ -26,3 +26,5 @@ export function Resultat({ result }: Props) {
   }, "");
   return <p>{res}</p>;
 }
+
+export default Resultat;

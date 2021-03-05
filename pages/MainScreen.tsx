@@ -120,3 +120,5 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
     </div>
   );
 }
+
+export default MainScreen;

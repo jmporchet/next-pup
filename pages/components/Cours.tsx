@@ -39,3 +39,5 @@ export function Cours({
     </>
   );
 }
+
+export default Cours;

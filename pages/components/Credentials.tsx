@@ -46,3 +46,5 @@ export function Credentials({ onSave, sariUsername, sariPassword }: Props) {
     </div>
   );
 }
+
+export default Credentials;
