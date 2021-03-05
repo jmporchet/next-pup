@@ -87,7 +87,7 @@ export default function Home(props: any) {
                   setSariPassword("");
                 }}
               >
-                reset credentials
+                Se déconnecter de Sari
               </button>
               <MainScreen
                 sariUsername={sariUsername}

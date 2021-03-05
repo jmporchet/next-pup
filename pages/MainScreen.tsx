@@ -22,11 +22,11 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
 
   async function handleClick() {
     if (selectedCourse === "") {
-      setResult([{ message: "selectedCourse error" }]);
+      setResult(["Choisissez un cours avant"]);
       return false;
     }
     if (eleves.length < 15 || !eleves.includes(",")) {
-      setResult([{ message: "eleve array error" }]);
+      setResult(["Le format des infos de l'élève est faux"]);
       return false;
     }
     const domaine = data.courses.sensi.find(
@@ -37,7 +37,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
       ? "moto"
       : "";
     if (domaine === "") {
-      setResult([{ message: "domaine error" }]);
+      setResult(["Erreur de domaine Sari"]);
       return false;
     }
 
@@ -66,11 +66,11 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
     }
   }
 
-  if (isLoading) return <p>loading</p>;
-  if (isFetching) return <p>fetching</p>;
-  if (error) return <p>error {error}</p>;
+  if (isLoading) return <p>Chargement des données...</p>;
+  if (isFetching) return <p>Chargement des données...</p>;
+  if (error) return <p>Erreur {error}</p>;
   if (data.courses.sensi.length === 0 && data.courses.moto.length === 0)
-    return <p>wrong login or no courses</p>;
+    return <p>Les infos de connexion sont fausses ou il n'y a pas de cours.</p>;
 
   return (
     <div className={styles.grid}>
@@ -123,7 +123,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
           onChange={(e) => setEleves(e.target.value)}
         />
         <button type="submit" disabled={loading} onClick={handleClick}>
-          Submit
+          Envoyer
         </button>
       </div>
 

@@ -26,8 +26,19 @@ export function Credentials({ onSave, sariUsername, sariPassword }: Props) {
     <div className={styles.grid}>
       <div className={styles.card}>
         <h3>Codes d'accès Sari</h3>
-        <form onSubmit={handleSubmit} id="myForm">
-          <input type="text" name="username" defaultValue={sariUsername} />
+        <form
+          onSubmit={handleSubmit}
+          id="myForm"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <label htmlFor="username">Nom d'utilisateur</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            defaultValue={sariUsername}
+          />
+          <label htmlFor="password">Mot de passe</label>
           <input type="password" name="password" defaultValue={sariPassword} />
           <input type="submit" value="Envoyer" />
         </form>
