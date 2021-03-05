@@ -1,14 +1,29 @@
 import { Page } from "puppeteer";
-
 const { isPast } = require("date-fns");
-const puppeteer = require("puppeteer");
+
+let chrome = { args: [], defaultViewport: null, executablePath: null };
+let puppeteer: any;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  // running on the Vercel platform.
+  chrome = require("chrome-aws-lambda");
+  puppeteer = require("puppeteer-core");
+} else {
+  // running locally.
+  puppeteer = require("puppeteer");
+}
 
 export const login = async (
   PUPPETEER_OPTIONS: any,
   login: string,
   password: string
 ) => {
-  const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+  const browser = await puppeteer.launch({
+    ...PUPPETEER_OPTIONS,
+    args: [...chrome.args, ...PUPPETEER_OPTIONS.args],
+    defaultViewport: chrome.defaultViewport,
+    executablePath: await chrome.executablePath,
+  });
   const page = await browser.newPage();
 
   await page.goto("https://www.vku-pgs.asa.ch/fr/login#");
