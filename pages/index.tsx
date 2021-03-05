@@ -8,7 +8,7 @@ import "minimal-feedback/dist/index.css";
 import styles from "../styles/Home.module.css";
 import { useLocalStorageState } from "../utils/useLocalStorage";
 import { Credentials } from "../components/Credentials";
-import { MainScreen } from "./MainScreen";
+import MainScreen from "../components/MainScreen";
 
 export default function Home() {
   const [hasCredentials, toggleCredentials] = useState(false);
@@ -89,6 +89,7 @@ export default function Home() {
               >
                 Se déconnecter de Sari
               </button>
+              {/* @ts-ignore */}
               <MainScreen
                 sariUsername={sariUsername}
                 sariPassword={sariPassword}

@@ -6,7 +6,7 @@ import {
   addEleve,
   searchEleve,
   addEleveToCourse,
-} from "../utils/puppeteer";
+} from "../../utils/puppeteer";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { eleve, courseId, domaine, username, password } = JSON.parse(req.body);
