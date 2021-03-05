@@ -139,7 +139,7 @@ export const addEleveToCourse = async (
   personNr: string,
   courseNr: string
 ) => {
-  return await page.evaluate(
+  const added = await page.evaluate(
     async ({ courseNr, personNr }) => {
       const response = await fetch(
         `https://www.vku-pgs.asa.ch/fr/coursegroup/${courseNr}/link/person/${personNr}`,
@@ -150,6 +150,8 @@ export const addEleveToCourse = async (
     },
     { courseNr, personNr }
   );
+  await page.waitForTimeout(200);
+  return added;
 };
 
 export const switchSections = async (page: Page, section: string) => {
