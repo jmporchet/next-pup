@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { Resultat } from "./components/Resultat";
-import { Cours } from "./components/Cours";
+import { Resultat } from "../components/Resultat";
+import { Cours } from "../components/Cours";
 
 import styles from "../styles/Home.module.css";
 

@@ -7,7 +7,7 @@ import "minimal-feedback/dist/index.css";
 
 import styles from "../styles/Home.module.css";
 import { useLocalStorageState } from "../utils/useLocalStorage";
-import { Credentials } from "./components/Credentials";
+import { Credentials } from "../components/Credentials";
 import { MainScreen } from "./MainScreen";
 
 export default function Home() {

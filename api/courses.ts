@@ -4,7 +4,7 @@ import {
   PUPPETEER_OPTIONS,
   switchSections,
   getCourses,
-} from "../../utils/puppeteer";
+} from "../utils/puppeteer";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, password } = req.query;
