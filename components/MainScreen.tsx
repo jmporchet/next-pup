@@ -20,7 +20,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   const url =
     process.env.NEXT_PUBLIC_VERCEL_URL === "localhost"
       ? `http://localhost:3000/api/courses?username=${sariUsername}&password=${sariPassword}`
-      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}:3000/api/courses?username=${sariUsername}&password=${sariPassword}`;
+      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/courses?username=${sariUsername}&password=${sariPassword}`;
   const { isLoading, error, data, isFetching } = useQuery("sariData", () =>
     fetch(url).then((res) => res.json())
   );
