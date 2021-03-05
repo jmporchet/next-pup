@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MinimalFeedback from "minimal-feedback";
 import "minimal-feedback/dist/index.css";
@@ -10,7 +10,7 @@ import { useLocalStorageState } from "../utils/useLocalStorage";
 import { Credentials } from "./components/Credentials";
 import { MainScreen } from "./MainScreen";
 
-export default function Home(props: any) {
+export default function Home() {
   const [hasCredentials, toggleCredentials] = useState(false);
   const [text, settext] = useState({ feedback: "" });
 

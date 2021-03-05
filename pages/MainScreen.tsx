@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 
 import styles from "../styles/Home.module.css";
@@ -70,7 +70,12 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   if (isFetching) return <p>Chargement des données...</p>;
   if (error) return <p>Erreur {error}</p>;
   if (data.courses.sensi.length === 0 && data.courses.moto.length === 0)
-    return <p>Les infos de connexion sont fausses ou il n'y a pas de cours.</p>;
+    return (
+      <p>
+        Les infos de connexion sont fausses ou il n'y a pas de cours.
+        Déconnectez-vous et essayez à nouveau.
+      </p>
+    );
 
   return (
     <div className={styles.grid}>
