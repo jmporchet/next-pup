@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { Resultat } from "./components/Resultat";
+import { Cours } from "./components/Cours";
 
 import styles from "../styles/Home.module.css";
 
@@ -80,43 +82,21 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   return (
     <div className={styles.grid}>
       <div className={styles.card}>
-        <h3>Liste des cours de sensi</h3>
-        {data.courses.sensi.map((course: any) => (
-          <>
-            <a
-              className={styles.link}
-              style={{
-                fontWeight: selectedCourse === course.id ? "bold" : "normal",
-                color: selectedCourse === course.id ? "#0070f3" : "",
-              }}
-              onClick={() => setSelectedCourse(course.id)}
-              key={course.id}
-            >
-              {course.date.substr(0, course.date.length - 4)} - {course.id}
-            </a>
-            <br />
-          </>
-        )) || <p>no courses</p>}
+        <h3>Cours de sensi</h3>
+        <Cours
+          courseData={data.courses.sensi}
+          selectedCourse={selectedCourse}
+          setSelectedCourse={setSelectedCourse}
+        />
       </div>
 
       <div className={styles.card}>
-        <h3>Liste des cours de moto</h3>
-        {data.courses.moto.map((course: any) => (
-          <>
-            <a
-              className={styles.link}
-              style={{
-                fontWeight: selectedCourse === course.id ? "bold" : "normal",
-                color: selectedCourse === course.id ? "#0070f3" : "",
-              }}
-              onClick={() => setSelectedCourse(course.id)}
-              key={course.id}
-            >
-              {course.date.substr(0, course.date.length - 4)} - {course.id}
-            </a>
-            <br />
-          </>
-        )) || <p>no courses</p>}
+        <h3>Cours moto</h3>
+        <Cours
+          courseData={data.courses.moto}
+          selectedCourse={selectedCourse}
+          setSelectedCourse={setSelectedCourse}
+        />
       </div>
 
       <div className={styles.card}>
@@ -135,25 +115,8 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
 
       <div className={styles.card}>
         <h3>Resultat</h3>
-        {result.map((res: any) => {
-          typeof res === "object" ? (
-            <p>
-              {res.course}:{" "}
-              {Object.keys(messages).includes(res.message)
-                ? // @ts-ignore
-                  messages[res.message]
-                : res.message}
-            </p>
-          ) : (
-            <p>{res}</p>
-          );
-        })}
+        <Resultat result={result} />
       </div>
     </div>
   );
 }
-
-const messages = {
-  "course.notenabled": "cours non activé",
-  "person.already.added": "déjà ajouté",
-};
