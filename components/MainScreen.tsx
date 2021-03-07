@@ -18,9 +18,9 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   const [result, setResult] = useState<any[]>([]);
 
   const url =
-    process.env.NEXT_PUBLIC_VERCEL_URL === "localhost"
-      ? `http://localhost:3000/api/courses?username=${sariUsername}&password=${sariPassword}`
-      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/courses?username=${sariUsername}&password=${sariPassword}`;
+    process.env.GCLOUD_API_URL === "localhost"
+      ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
+      : `https://${process.env.GCLOUD_API_URL}/courses?username=${sariUsername}&password=${sariPassword}`;
   const { isLoading, error, data, isFetching } = useQuery("sariData", () =>
     fetch(url).then((res) => res.json())
   );
@@ -49,7 +49,11 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
     setLoading(true);
     setResult([""]);
     try {
-      const res = await fetch("http://localhost:3000/api/addStudentsToCourse", {
+      const url =
+        process.env.GCLOUD_API_URL === "localhost"
+          ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
+          : `https://${process.env.GCLOUD_API_URL}/addStudentsToCourse`;
+      const res = await fetch(url, {
         body: JSON.stringify({
           eleves: eleves.split("\n").reduce((list: any[], line: string) => {
             const [faber, bday] = line.trim().split(",");
