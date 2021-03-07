@@ -20,7 +20,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
   const url =
     process.env.GCLOUD_API_URL === "localhost"
       ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
-      : `https://${process.env.GCLOUD_API_URL}/courses?username=${sariUsername}&password=${sariPassword}`;
+      : `https://pup-u7q3soalaa-ew.a.run.app/api/v1/courses?username=${sariUsername}&password=${sariPassword}`;
   const { isLoading, error, data, isFetching } = useQuery("sariData", () =>
     fetch(url).then((res) => res.json())
   );
@@ -52,7 +52,7 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
       const url =
         process.env.GCLOUD_API_URL === "localhost"
           ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
-          : `https://${process.env.GCLOUD_API_URL}/addStudentsToCourse`;
+          : `https://pup-u7q3soalaa-ew.a.run.app/api/v1/addStudentsToCourse`;
       const res = await fetch(url, {
         body: JSON.stringify({
           eleves: eleves.split("\n").reduce((list: any[], line: string) => {
