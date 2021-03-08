@@ -49,6 +49,10 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
     setLoading(true);
     setResult([""]);
     try {
+      const url =
+        process.env.GCLOUD_API_URL === "localhost"
+          ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
+          : `https://pup-u7q3soalaa-ew.a.run.app/api/v1/addStudentsToCourse`;
       const options = {
         headers: {
           "Content-Type": "application/json",
