@@ -49,11 +49,10 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
     setLoading(true);
     setResult([""]);
     try {
-      const url =
-        process.env.GCLOUD_API_URL === "localhost"
-          ? `http://localhost:8080/api/v1/courses?username=${sariUsername}&password=${sariPassword}`
-          : `https://pup-u7q3soalaa-ew.a.run.app/api/v1/addStudentsToCourse`;
-      const res = await fetch(url, {
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           eleves: eleves.split("\n").reduce((list: any[], line: string) => {
             const [faber, bday] = line.trim().split(",");
@@ -65,7 +64,8 @@ export function MainScreen({ sariUsername, sariPassword }: Props) {
           password: sariPassword,
         }),
         method: "post",
-      });
+      };
+      const res = await fetch(url, options);
       const result = await res.json();
       setResult(result[0].result);
     } catch (e) {

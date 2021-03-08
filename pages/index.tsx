@@ -18,6 +18,10 @@ export default function Home() {
     const req = await fetch(
       "https://hook.integromat.com/fpsmu2ifubkw0wxoak5i1bt1t13ychwr",
       {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(text),
         method: "post",
       }
