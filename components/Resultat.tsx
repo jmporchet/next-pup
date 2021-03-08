@@ -14,17 +14,29 @@ const messages: { [key: string]: string } = {
 };
 
 export function Resultat({ result }: Props) {
+  if (!Array.isArray(result))
+    return (
+      <p style={{ color: "red" }}>
+        {typeof result} {JSON.stringify(result)}
+      </p>
+    );
   const res = result.reduce((acc: any, curr: any) => {
     if (typeof curr !== "object") {
-      return curr;
+      return [curr];
     }
     if (Object.keys(messages).includes(curr.message)) {
-      return acc.concat(curr.course + messages[curr.message]);
+      return [...acc, curr.course + ": " + messages[curr.message]];
     } else {
-      return acc.concat(curr.message);
+      return [...acc, curr.message];
     }
-  }, "");
-  return <p>{res}</p>;
+  }, []);
+  return (
+    <>
+      {res.map((el: any) => (
+        <p>{el}</p>
+      ))}
+    </>
+  );
 }
 
 export default Resultat;
