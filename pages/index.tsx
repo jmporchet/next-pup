@@ -4,11 +4,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MinimalFeedback from "minimal-feedback";
 import "minimal-feedback/dist/index.css";
+import { ErrorBoundary } from "react-error-boundary";
 
 import styles from "../styles/Home.module.css";
 import { useLocalStorageState } from "../utils/useLocalStorage";
 import { Credentials } from "../components/Credentials";
 import MainScreen from "../components/MainScreen";
+import { ErrorMessage } from "../components/ErrorMessage";
 
 export default function Home() {
   const [hasCredentials, toggleCredentials] = useState(false);
@@ -67,48 +69,50 @@ export default function Home() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className={styles.container}>
-        <Head>
-          <title>Gestion Sari</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <ErrorBoundary FallbackComponent={ErrorMessage}>
+      <QueryClientProvider client={queryClient}>
+        <div className={styles.container}>
+          <Head>
+            <title>Gestion Sari</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
 
-        <main className={styles.main}>
-          <h1 className={styles.title}>Gestion Sari</h1>
+          <main className={styles.main}>
+            <h1 className={styles.title}>Gestion Sari</h1>
 
-          {!hasCredentials ? (
-            <Credentials
-              onSave={handleCredentialsSave}
-              sariUsername={sariUsername}
-              sariPassword={sariPassword}
-            />
-          ) : (
-            <>
-              <button
-                onClick={() => {
-                  setSariUsername("");
-                  setSariPassword("");
-                }}
-              >
-                Se déconnecter de Sari
-              </button>
-              {/* @ts-ignore */}
-              <MainScreen
+            {!hasCredentials ? (
+              <Credentials
+                onSave={handleCredentialsSave}
                 sariUsername={sariUsername}
                 sariPassword={sariPassword}
               />
-            </>
-          )}
-        </main>
-        <MinimalFeedback
-          save={saveFeedback}
-          value={text}
-          onChange={(e: any) => settext(e)}
-          ariaHideApp={false}
-        />
-        <ReactQueryDevtools initialIsOpen />
-      </div>
-    </QueryClientProvider>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    setSariUsername("");
+                    setSariPassword("");
+                  }}
+                >
+                  Se déconnecter de Sari
+                </button>
+                {/* @ts-ignore */}
+                <MainScreen
+                  sariUsername={sariUsername}
+                  sariPassword={sariPassword}
+                />
+              </>
+            )}
+          </main>
+          <MinimalFeedback
+            save={saveFeedback}
+            value={text}
+            onChange={(e: any) => settext(e)}
+            ariaHideApp={false}
+          />
+          <ReactQueryDevtools initialIsOpen />
+        </div>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
